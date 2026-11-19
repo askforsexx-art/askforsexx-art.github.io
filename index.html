@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>idam Emmanuel | REVENGE UPTIME — Elite Uptime Monitoring &amp; Status Pages</title>
+<meta name="description" content="Personal site of idam Emmanuel — creator of REVENGE UPTIME, a free, self-hosted uptime monitoring and status-page toolkit. HTTP, TCP, ping, DNS, SSL, Docker monitoring with 90+ alert channels and 20-second checks." />
+<meta name="author" content="idam Emmanuel" />
+<meta name="theme-color" content="#070a10" />
+<meta property="og:title" content="idam Emmanuel — REVENGE UPTIME" />
+<meta property="og:description" content="Free, self-hosted uptime monitoring and status pages. 20-second checks, 90+ alert channels, zero mercy for downtime." />
+<meta property="og:type" content="website" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%23070a10'/%3E%3Cpath fill='%23ff2a2a' d='M300 32 L148 300 h92 L196 480 L372 206 h-96 L338 32 Z'/%3E%3C/svg%3E" />
+<style>
+:root{
+    --bg:#070a10;
+    --bg-2:#0d1117;
+    --panel:#11161f;
+    --panel-2:#161b22;
+    --line:rgba(255,255,255,.07);
+    --red:#ff2a2a;
+    --red-soft:#ff5c5c;
+    --red-deep:#c40000;
+    --text:#e6edf3;
+    --muted:#8b949e;
+    --ok:#3fb950;
+    --radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+}
+::selection{background:var(--red);color:#fff}
+
+/* ---------- backdrop fx ---------- */
+.fx{position:fixed;inset:0;z-index:0;pointer-events:none}
+.fx::before{
+    content:"";position:absolute;inset:0;
+    background:
+        radial-gradient(1000px 600px at 75% -10%, rgba(255,42,42,.16), transparent 60%),
+        radial-gradient(800px 500px at -10% 40%, rgba(255,42,42,.08), transparent 55%),
+        radial-gradient(700px 700px at 50% 110%, rgba(255,42,42,.10), transparent 60%);
+}
+.fx::after{
+    content:"";position:absolute;inset:0;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 90% 70% at 50% 20%, black 40%, transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 20%, black 40%, transparent 75%);
+}
+.noise{position:fixed;inset:0;z-index:1;opacity:.05;pointer-events:none;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+main,header.nav,footer{position:relative;z-index:2}
+.container{width:min(1180px,100% - 40px);margin:0 auto}
+
+/* ---------- nav ---------- */
+header.nav{
+    position:sticky;top:0;z-index:20;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    background:rgba(7,10,16,.72);
+    border-bottom:1px solid var(--line);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+.wordmark{display:flex;align-items:center;gap:12px;text-decoration:none}
+.wordmark svg{width:34px;height:34px;filter:drop-shadow(0 0 12px rgba(255,42,42,.55))}
+.wordmark .w1{font-weight:800;letter-spacing:2px;font-size:15px;color:var(--text)}
+.wordmark .w1 em{font-style:normal;color:var(--red)}
+.wordmark .w2{display:block;font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;font-weight:600}
+.nav-links{display:flex;gap:26px;list-style:none;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.5px;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.btn{
+    display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer;text-decoration:none;
+    font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:12px;
+    padding:14px 26px;border-radius:999px;color:#0b0b0b;
+    background:linear-gradient(180deg,#ff6b6b 0%,#ff2a2a 45%,#d40000 100%);
+    box-shadow:0 0 0 1px rgba(255,255,255,.15) inset,0 10px 40px rgba(255,42,42,.35);
+    transition:transform .2s,box-shadow .2s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(255,255,255,.25) inset,0 16px 60px rgba(255,42,42,.5)}
+.btn.ghost{background:transparent;color:var(--text);box-shadow:0 0 0 1px var(--line) inset}
+.btn.ghost:hover{box-shadow:0 0 0 1px rgba(255,42,42,.5) inset;color:#fff}
+.btn.sm{padding:10px 18px;font-size:11px}
+
+/* ---------- hero ---------- */
+.hero{min-height:calc(100vh - 64px);display:flex;align-items:center;position:relative;overflow:hidden}
+.hero-inner{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding:60px 0}
+.kicker{display:inline-flex;align-items:center;gap:10px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red-soft);border:1px solid rgba(255,42,42,.35);padding:7px 14px;border-radius:999px;margin-bottom:26px;background:rgba(255,42,42,.06)}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(63,185,80,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(63,185,80,0)}100%{box-shadow:0 0 0 0 rgba(63,185,80,0)}}
+h1{
+    font-size:clamp(3rem,8.2vw,6rem);line-height:.98;font-weight:900;letter-spacing:-2px;text-transform:uppercase;
+    background:linear-gradient(180deg,#fff 20%,#b9c2cc 60%,#5a636e 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+h1 .revenge{
+    background:linear-gradient(180deg,#ff7a7a 0%,#ff2a2a 40%,#a80000 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    filter:drop-shadow(0 0 34px rgba(255,42,42,.35));
+}
+.hero p.lede{margin:26px 0 34px;font-size:18px;color:#b9c2cc;max-width:540px}
+.hero p.lede strong{color:#fff}
+.cta-row{display:flex;gap:16px;flex-wrap:wrap}
+.hero-stats{display:flex;gap:34px;margin-top:44px;flex-wrap:wrap}
+.stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.5px}
+.stat b i{font-style:normal;color:var(--red)}
+.stat span{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+/* hero bolt emblem */
+.emblem{display:flex;justify-content:center;align-items:center}
+.emblem-ring{position:relative;width:min(340px,70vw);aspect-ratio:1;display:grid;place-items:center}
+.emblem-ring::before,.emblem-ring::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,42,42,.25)}
+.emblem-ring::after{inset:12%;border-color:rgba(255,255,255,.08);border-style:dashed;animation:spin 24s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.emblem-core{
+    width:52%;aspect-ratio:1;border-radius:28%;display:grid;place-items:center;
+    background:linear-gradient(165deg,#1c2333 0%,#0d1117 60%,#070a10 100%);
+    border:1px solid rgba(255,42,42,.4);
+    box-shadow:0 0 80px rgba(255,42,42,.35),0 0 0 1px rgba(255,255,255,.05) inset,0 30px 80px rgba(0,0,0,.6);
+}
+.emblem-core svg{width:52%;filter:drop-shadow(0 0 22px rgba(255,42,42,.8))}
+.orbit{position:absolute;inset:0;animation:spin 18s linear infinite reverse}
+.orbit span{position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red)}
+
+/* ---------- marquee ---------- */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;background:rgba(255,255,255,.02);padding:12px 0;white-space:nowrap}
+.marquee-track{display:inline-flex;gap:48px;animation:scroll 28s linear infinite;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.marquee-track b{color:var(--red-soft)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ---------- sections ---------- */
+section{padding:90px 0}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:44px;gap:20px}
+.eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--red-soft);font-weight:700;margin-bottom:12px}
+h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-1px;line-height:1.05;text-transform:uppercase}
+.section-head p{color:var(--muted);max-width:380px;font-size:14px}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{
+    background:linear-gradient(180deg,var(--panel) 0%,var(--panel-2) 100%);
+    border:1px solid var(--line);border-radius:var(--radius);padding:26px;
+    transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden;
+}
+.card::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,42,42,.6),transparent);opacity:0;transition:opacity .25s}
+.card:hover{transform:translateY(-4px);border-color:rgba(255,42,42,.35);box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.card:hover::after{opacity:1}
+.card .ic{width:40px;height:40px;border-radius:12px;background:rgba(255,42,42,.12);display:grid;place-items:center;margin-bottom:16px;color:var(--red-soft)}
+.card h3{font-size:15px;letter-spacing:.5px;margin-bottom:8px}
+.card p{font-size:13px;color:var(--muted)}
+.card b.tag{display:inline-block;margin-top:14px;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red-soft);background:rgba(255,42,42,.08);border:1px solid rgba(255,42,42,.25);border-radius:6px;padding:4px 8px}
+
+/* about */
+.about{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:center}
+.portrait{
+    aspect-ratio:4/5;border-radius:var(--radius);border:1px solid var(--line);
+    background:
+        radial-gradient(120% 100% at 50% 0%, rgba(255,42,42,.22), transparent 55%),
+        linear-gradient(180deg,#141a24,#0b0f16);
+    display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+}
+.portrait .mono{
+    font-size:clamp(5rem,14vw,9rem);font-weight:900;letter-spacing:-6px;
+    background:linear-gradient(180deg,#ffffff 10%,#ff2a2a 90%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    opacity:.9;
+}
+.portrait .cap{position:absolute;bottom:18px;left:18px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.about-copy p{color:#b9c2cc;margin-bottom:18px;font-size:16px}
+.about-copy strong{color:#fff}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.chip{font-size:11px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);color:#cdd6df;background:rgba(255,255,255,.03);font-weight:600}
+.chip.hot{border-color:rgba(255,42,42,.4);color:var(--red-soft)}
+
+/* manifesto */
+.manifesto{counter-reset:item}
+.manifesto li{counter-increment:item;list-style:none;display:flex;gap:26px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.manifesto li:last-child{border-bottom:none}
+.manifesto li::before{content:"0" counter(item);font-weight:900;font-size:14px;color:var(--red);letter-spacing:1px;font-variant-numeric:tabular-nums}
+.manifesto b{display:block;font-size:17px;letter-spacing:.3px;margin-bottom:4px}
+.manifesto span{color:var(--muted);font-size:14px}
+
+/* status bar */
+.statusbar{margin-top:40px;display:flex;align-items:center;gap:14px;border:1px solid rgba(63,185,80,.3);background:rgba(63,185,80,.06);padding:14px 18px;border-radius:12px;font-size:12px;letter-spacing:1px;text-transform:uppercase;font-weight:700;color:#7ee787}
+.statusbar small{color:var(--muted);margin-left:auto;letter-spacing:.5px;text-transform:none;font-weight:400}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:34px 0;background:rgba(255,255,255,.02)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.foot b{color:var(--red-soft)}
+.foot a{color:var(--text);text-decoration:none;border-bottom:1px solid rgba(255,42,42,.5)}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:900px){
+    .hero-inner{grid-template-columns:1fr;padding:40px 0 70px;gap:40px}
+    .emblem{order:-1}
+    .emblem-ring{width:200px}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .about{grid-template-columns:1fr}
+    .portrait{max-width:340px}
+    .nav-links li:not(.cta){display:none}
+    .section-head{flex-direction:column;align-items:start}
+}
+@media (max-width:520px){.grid{grid-template-columns:1fr}.hero-stats{gap:20px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="fx"></div>
+<div class="noise"></div>
+
+<header class="nav">
+    <div class="container nav-inner">
+        <a class="wordmark" href="#top" aria-label="REVENGE UPTIME — home">
+            <svg viewBox="0 0 512 512" fill="none" aria-hidden="true"><rect width="512" height="512" rx="112" fill="#0d1117"/><path fill="#ff2a2a" d="M300 32 L148 300 h92 L196 480 L372 206 h-96 L338 32 Z"/></svg>
+            <span><span class="w1">REVENGE <em>⚡</em> UPTIME</span><span class="w2">Powered by idam Emmanuel</span></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#project">Project</a></li>
+            <li><a href="#manifesto">Manifesto</a></li>
+            <li><a href="#about">About</a></li>
+            <li class="cta"><a class="btn sm" href="#contact">Get in touch</a></li>
+        </ul>
+    </div>
+</header>
+
+<main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-inner">
+            <div>
+                <span class="kicker"><span class="pulse"></span>All systems monitored · 20s checks</span>
+                <h1><span class="revenge">REVENGE</span><br/>UPTIME</h1>
+                <p class="lede">
+                    I build tools that treat <strong>downtime as a personal insult</strong>.
+                    <strong>REVENGE UPTIME</strong> is my free, self-hosted monitoring and status-page platform —
+                    HTTP, TCP, ping, DNS, SSL &amp; Docker watchdogs, 90+ alert channels, one obsessive goal:
+                    <strong>nothing goes down quietly on my watch.</strong>
+                </p>
+                <div class="cta-row">
+                    <a class="btn" href="#project">Explore the project</a>
+                    <a class="btn ghost" href="#about">Meet idam Emmanuel</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><b>20<i>s</i></b><span>Check interval</span></div>
+                    <div class="stat"><b>90<i>+</i></b><span>Alert channels</span></div>
+                    <div class="stat"><b>99<i>.99%</i></b><span>Uptime obsession</span></div>
+                    <div class="stat"><b><i>0</i>$</b><span>Price · forever</span></div>
+                </div>
+            </div>
+
+            <div class="emblem" aria-hidden="true">
+                <div class="emblem-ring">
+                    <div class="orbit"><span></span></div>
+                    <div class="emblem-core">
+                        <svg viewBox="0 0 512 512"><path fill="url(#g)" d="M300 32 L148 300 h92 L196 480 L372 206 h-96 L338 32 Z"/><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a7a"/><stop offset=".45" stop-color="#ff2a2a"/><stop offset="1" stop-color="#c40000"/></linearGradient></defs></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true">
+        <div class="marquee-track" id="marqueeTrack">
+            <span><b>HTTP · TCP · Ping · DNS · SSL · Websocket · Docker · Push</b></span>
+            <span>20-second intervals</span>
+            <span>90+ notification channels</span>
+            <span>Self-hosted &amp; free</span>
+            <span><b>REVENGE UPTIME</b> — powered by idam Emmanuel</span>
+        </div>
+    </div>
+
+    <!-- PROJECT -->
+    <section id="project">
+        <div class="container">
+            <div class="section-head reveal">
+                <div>
+                    <div class="eyebrow">Flagship project</div>
+                    <h2>One platform.<br/>Zero excuses.</h2>
+                </div>
+                <p>REVENGE UPTIME is a self-hosted monitoring engine and status-page system for developers who can't afford silent failures. Built in the open, deployable anywhere, free for good.</p>
+            </div>
+
+            <div class="grid">
+                <div class="card reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><h3>Deep Monitoring</h3><p>HTTP(s), TCP ports, keywords, JSON queries, Websocket, Ping, DNS records, SSL expiry, Steam &amp; Docker — all on 20s intervals.</p><b class="tag">Core engine</b></div>
+
+                <div class="card reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><h3>90+ Alert Channels</h3><p>Discord, Telegram, Slack, Email/SMTP, PagerDuty, Opsgenie, webhooks and more — wake the right human in seconds.</p><b class="tag">Notifications</b></div>
+
+                <div class="card reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 10h8M8 14h5"/></svg></div><h3>Status Pages</h3><p>Beautiful public status pages with custom domains, incident history and subscriber-friendly updates.</p><b class="tag">Transparency</b></div>
+
+                <div class="card reveal"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Self-Hosted &amp; Free</h3><p>Your data stays yours. Deploy on any VPS or laptop — no SaaS lock-in, no per-monitor pricing, ever.</p><b class="tag">Yours forever</b></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section id="manifesto" style="background:rgba(255,255,255,.02);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+        <div class="container">
+            <div class="section-head reveal">
+                <div>
+                    <div class="eyebrow">The Revenge Manifesto</div>
+                    <h2>Why I build<br/>like this</h2>
+                </div>
+            </div>
+            <ol class="manifesto reveal">
+                <li><div><b>Downtime is a bug in my character, not just my stack.</b><span>Every outage is a promise broken to a real human on the other side of the screen. I take that personally — professionally, but personally.</span></div></li>
+                <li><div><b>Free tools should be first-class tools.</b><span>World-class reliability engineering shouldn't be gated behind enterprise invoices. Open source is the great equalizer.</span></div></li>
+                <li><div><b>Self-hosting is sovereignty.</b><span>Your monitoring data is operational intelligence. It belongs on your infrastructure, not someone's dashboard.</span></div></li>
+                <li><div><b>Alert fatigue is enemy fire.</b><span>90+ channels exist so the right signal reaches the right human — not so every phone in the room screams at once.</span></div></li>
+            </ol>
+            <div class="statusbar reveal"><span class="pulse"></span> Systems nominal <small id="clock">—</small></div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="container about">
+            <div class="portrait reveal" aria-hidden="true"><span class="mono">iE</span><span class="cap">idam Emmanuel — Lagos, NG</span></div>
+            <div class="about-copy reveal">
+                <div class="eyebrow">About the builder</div>
+                <h2 style="margin-bottom:22px">idam<br/>Emmanuel</h2>
+                <p>I'm <strong>idam Emmanuel</strong>, a software developer from <strong>Lagos, Nigeria</strong>, and the mind behind <strong>REVENGE UPTIME</strong> — a free, self-hosted monitoring and status-page platform maintained in the open.</p>
+                <p>My work lives at the intersection of <strong>reliability engineering</strong> and <strong>developer experience</strong>: tooling that catches failures in seconds, explains itself in plain language, and never holds your data hostage.</p>
+                <p>I believe software developers deserve <strong>premium-grade infrastructure without premium-grade invoices</strong> — which is why every tool I ship is free, open, and built to be forked.</p>
+                <div class="chips">
+                    <span class="chip hot">REVENGE UPTIME</span>
+                    <span class="chip">Node.js</span>
+                    <span class="chip">Vue.js</span>
+                    <span class="chip">Self-hosted infra</span>
+                    <span class="chip">Status pages</span>
+                    <span class="chip">Open source</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT / CTA -->
+    <section id="contact" style="padding-top:40px;text-align:center">
+        <div class="container">
+            <div class="eyebrow reveal" style="justify-content:center;display:flex">Open channel</div>
+            <h2 class="reveal" style="font-size:clamp(2.2rem,6vw,4rem)">Let's keep<br/><span style="color:var(--red)">everything up.</span></h2>
+            <p class="reveal" style="color:var(--muted);max-width:520px;margin:22px auto 34px">Feedback, collabs, or a bug report hot off your pager — my inbox is open on GitHub.</p>
+            <div class="reveal"><a class="btn" href="https://github.com/askforsexx-art" rel="me noopener" target="_blank">Find me on GitHub</a></div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container foot">
+        <span><b>REVENGE ⚡ UPTIME</b> — Powered by idam Emmanuel</span>
+        <span>© <span id="yr"></span> idam Emmanuel · Lagos, NG · Built with <span style="color:var(--red)">♥</span> &amp; caffeine</span>
+        <a href="#top">Back to top ↑</a>
+    </div>
+</footer>
+
+<script>
+// year
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// duplicated marquee content for seamless loop
+const track = document.getElementById('marqueeTrack');
+track.innerHTML += track.innerHTML;
+
+// live clock in the status bar
+const clock = document.getElementById('clock');
+const tick = () => { clock.textContent = new Date().toLocaleString('en-GB', { weekday:'short', day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit', second:'2-digit' }); };
+tick(); setInterval(tick, 1000);
+
+// scroll reveal
+const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
